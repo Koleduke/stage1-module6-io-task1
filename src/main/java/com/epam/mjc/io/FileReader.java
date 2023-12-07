@@ -11,7 +11,7 @@ public class FileReader {
     private String emailR;
     private Long phoneR;
 
-    public Profile getDataFromFile(File file) throws StudentNotFoundException {
+    public Profile getDataFromFile(File file) {
         String[] sentences = getStrings(file);
         for (int i = 0; i<sentences.length;i++ ){
             String[] sentences1 = sentences[i].split("\\s+");
@@ -27,7 +27,7 @@ public class FileReader {
                 return new Profile(nameR,ageR,emailR,phoneR);
     }
 
-    private static String[] getStrings(File file) throws StudentNotFoundException {
+    private static String[] getStrings(File file){
         StringBuilder input = new StringBuilder();
         try (java.io.FileReader sdf = new java.io.FileReader(file)){
             int ch;
@@ -35,7 +35,11 @@ public class FileReader {
                 String str = Character.toString((char) ch);
                 input.append(str);}
         } catch (IOException e) {
-            throw new StudentNotFoundException(e);
+            try {
+                throw new StudentNotFoundException(e);
+            } catch (StudentNotFoundException ex) {
+                throw new RuntimeException(ex);
+            }
         }
         return input.toString().split("\n");
     }
