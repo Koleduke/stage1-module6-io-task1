@@ -2,6 +2,7 @@ package com.epam.mjc.io;
 
 import java.io.File;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 
@@ -11,7 +12,7 @@ public class FileReader {
     private String emailR;
     private Long phoneR;
 
-    public Profile getDataFromFile(File file)  {
+    public Profile getDataFromFile(File file){
         String[] sentences = getStrings(file);
         for (int i = 0; i<sentences.length;i++ ){
             String[] sentences1 = sentences[i].split("\\s+");
@@ -27,25 +28,20 @@ public class FileReader {
                 return new Profile(nameR,ageR,emailR,phoneR);
     }
 
-    private static String[] getStrings(File file) {
-        java.io.FileReader sdf = null;
+    private static String[] getStrings(File file){
+        //java.io.FileReader sdf = null;
         String input ="";
-        try {
+        try (java.io.FileReader sdf = new java.io.FileReader(file)){
             int ch;
-            sdf = new java.io.FileReader(file);
-            while ((ch=sdf.read())!=-1){
-                String str = Character.toString( (char) ch);
+            while ((ch = sdf.read()) != -1) {
+                String str = Character.toString((char) ch);
                 //System.out.println(ch);
-                input = input + str;}
-        } catch (IOException e){}
-        finally {
-            assert sdf != null;
-            try {
-                sdf.close();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+                input = input + str;
             }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
+
         String[] sentences = input.split("\\\n");
         return sentences;
     }
