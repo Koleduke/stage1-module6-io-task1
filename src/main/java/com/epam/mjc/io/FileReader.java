@@ -2,7 +2,6 @@ package com.epam.mjc.io;
 
 import java.io.File;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 
@@ -29,21 +28,16 @@ public class FileReader {
     }
 
     private static String[] getStrings(File file){
-        //java.io.FileReader sdf = null;
-        String input ="";
+        StringBuilder input = new StringBuilder();
         try (java.io.FileReader sdf = new java.io.FileReader(file)){
             int ch;
             while ((ch = sdf.read()) != -1) {
                 String str = Character.toString((char) ch);
-                //System.out.println(ch);
-                input = input + str;
-            }
+                input.append(str);}
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
-        String[] sentences = input.split("\\\n");
-        return sentences;
+        return input.toString().split("\n");
     }
 }
 
