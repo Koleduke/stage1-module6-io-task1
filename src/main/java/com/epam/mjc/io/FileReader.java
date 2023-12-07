@@ -35,11 +35,7 @@ public class FileReader {
                 String str = Character.toString((char) ch);
                 input.append(str);}
         } catch (IOException e) {
-            try {
-                throw new StudentNotFoundException(e);
-            } catch (StudentNotFoundException ex) {
-                throw new RuntimeException(ex);
-            }
+            throw new StudentNotFoundException(e);
         }
         return input.toString().split("\n");
     }
